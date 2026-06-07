@@ -1,5 +1,6 @@
 package com.novamart.reconciliation.controller;
 
+import com.novamart.reconciliation.config.ReconciliationConfig;
 import com.novamart.reconciliation.model.ReconciliationReport;
 import com.novamart.reconciliation.service.ReconciliationService;
 import org.springframework.core.io.ClassPathResource;
@@ -12,25 +13,28 @@ import java.io.InputStream;
 public class ReconciliationController {
 
     private final ReconciliationService reconciliationService;
+    private final ReconciliationConfig config;
 
-    public ReconciliationController(ReconciliationService reconciliationService) {
+    public ReconciliationController(ReconciliationService reconciliationService, ReconciliationConfig config) {
         this.reconciliationService = reconciliationService;
+        this.config = config;
     }
 
     @GetMapping("/run-local-test/{processor}")
     public ResponseEntity<ReconciliationReport> runLocalTest(@PathVariable String processor) {
-        try {
-            InputStream internalStream = new ClassPathResource("test-data/internal_transactions.json").getInputStream();
-            
-            String extFileName = processor.equalsIgnoreCase("STRIPE") 
-                ? "test-data/stripe_settlement.json" 
-                : "test-data/adyen_settlement.csv";
-                
-            InputStream externalStream = new ClassPathResource(extFileName).getInputStream();
+        // Look up the filename based on the processor key
+        String fileName = config.getTestFiles().get(processor.toUpperCase());
+
+        if (fileName == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        try (InputStream internalStream = new ClassPathResource("test-data/internal_transactions.json").getInputStream();
+             InputStream externalStream = new ClassPathResource(fileName).getInputStream()) {
 
             ReconciliationReport report = reconciliationService.reconcile(internalStream, externalStream, processor);
             return ResponseEntity.ok(report);
-            
+
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
