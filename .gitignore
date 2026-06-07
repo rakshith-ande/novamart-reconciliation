@@ -1,0 +1,18 @@
+# Compiled class file
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.zip
+
+# IDE settings
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+.metadata/
+
+# Maven build directory
+target/

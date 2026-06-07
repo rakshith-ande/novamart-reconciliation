@@ -1,0 +1,7 @@
+[
+  { "transactionId": "TXN-STRIPE-001", "orderId": "ORD-001", "amount": 100.00, "currency": "USD", "processor": "STRIPE", "status": "CAPTURED" },
+  { "transactionId": "TXN-ADYEN-002", "orderId": "ORD-002", "amount": 250.00, "currency": "MXN", "processor": "ADYEN", "status": "CAPTURED" },
+  { "transactionId": "TXN-STRIPE-003", "orderId": "ORD-003", "amount": 50.00, "currency": "USD", "processor": "STRIPE", "status": "CAPTURED" },
+  { "transactionId": "TXN-STRIPE-004", "orderId": "ORD-004", "amount": 200.00, "currency": "USD", "processor": "STRIPE", "status": "CAPTURED" },
+  { "transactionId": "TXN-ADYEN-005", "orderId": "ORD-005", "amount": 400.00, "currency": "MXN", "processor": "ADYEN", "status": "CAPTURED" }
+]

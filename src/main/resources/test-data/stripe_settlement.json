@@ -1,0 +1,6 @@
+[
+  { "id": "TXN-STRIPE-001", "amount_gross": 100.00, "amount_fee": 2.90, "amount_net": 97.10, "currency": "USD" },
+  { "id": "TXN-STRIPE-004", "amount_gross": 200.00, "amount_fee": 5.80, "amount_net": 194.20, "currency": "USD" },
+  { "id": "TXN-STRIPE-004", "amount_gross": 200.00, "amount_fee": 5.80, "amount_net": 194.20, "currency": "USD" }, 
+  { "id": "TXN-STRIPE-099", "amount_gross": 500.00, "amount_fee": 15.00, "amount_net": 485.00, "currency": "USD" } 
+]
