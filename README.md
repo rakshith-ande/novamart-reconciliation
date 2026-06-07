@@ -73,10 +73,24 @@ The application provides local endpoints to trigger reconciliation using the tes
   GET http://localhost:8080/api/v1/reconciliation/run-local-test/ADYEN
   ```
 
-* **To run reconciliation for Adyen:**
-  ```text
-  GET http://localhost:8080/api/v1/reconciliation/run-local-test/MERCADO_PAGO
-  ```
-Note: For MERCADO_PAGO you will exception 404, that our application handled
+Note on Error Handling: If you request a processor(MERCADO_PAGO) that is not yet configured, the system will return a structured 404 Not Found response with a clear error message, handled by our Global Exception Handler.
 
 The system will return a JSON report outlining matches and discrepancies.
+
+## 5. Future Roadmap & Scalability
+
+### Moving from Local Files to Real-Time APIs
+The current implementation uses `ClassPathResource` to simulate ingestion. To scale to production, the `SettlementParser` strategy will be updated to:
+* **API Integration:** Replace file reading logic with an HTTP client (`WebClient`) to fetch reports directly from live processor endpoints.
+* **Authentication:** Implement secure OAuth2 / API Key management to connect to live production environments.
+
+### Adding New Processors (Extensibility)
+Our architecture follows the **Open/Closed Principle** and the **Strategy Pattern**. Adding a new vendor is modular and scalable:
+1. **Implement Strategy:** Create a new class that implements the `SettlementParser` interface to handle the specific parsing logic (CSV/JSON/XML) for the new vendor.
+2. **Register Vendor:** Add the new processor's settlement file path (or API endpoint configuration) to `src/main/resources/application.properties`.
+3. **Automatic Registration:** The system’s `ReconciliationService` dynamically utilizes the corresponding strategy implementation based on the processor name, allowing for vendor onboarding with minimal core logic changes.
+
+### Planned "Stretch" Enhancements
+* **Batch Processing:** Integration with **Spring Batch** to process multi-gigabyte datasets via chunk-based processing, ensuring the system remains responsive under heavy load.
+* **Event-Driven Reconciliation:** Implementing webhook listeners to process settlements in real-time as they arrive from payment processors, rather than relying on batch file ingestion.
+* **Fuzzy Matching:** Implementing advanced algorithms (e.g., Levenshtein distance) to automatically resolve minor transaction ID variations, such as leading zeros or prefix differences.
