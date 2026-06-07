@@ -72,4 +72,11 @@ The application provides local endpoints to trigger reconciliation using the tes
   ```text
   GET http://localhost:8080/api/v1/reconciliation/run-local-test/ADYEN
   ```
+
+* **To run reconciliation for Adyen:**
+  ```text
+  GET http://localhost:8080/api/v1/reconciliation/run-local-test/MERCADO_PAGO
+  ```
+Note: For MERCADO_PAGO you will exception 404, that our application handled
+
 The system will return a JSON report outlining matches and discrepancies.
