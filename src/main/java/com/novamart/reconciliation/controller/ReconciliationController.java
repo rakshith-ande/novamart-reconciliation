@@ -1,6 +1,7 @@
 package com.novamart.reconciliation.controller;
 
 import com.novamart.reconciliation.config.ReconciliationConfig;
+import com.novamart.reconciliation.exception.VendorNotSupportedException;
 import com.novamart.reconciliation.model.ReconciliationReport;
 import com.novamart.reconciliation.service.ReconciliationService;
 import org.springframework.core.io.ClassPathResource;
@@ -25,8 +26,9 @@ public class ReconciliationController {
         // Look up the filename based on the processor key
         String fileName = config.getTestFiles().get(processor.toUpperCase());
 
+        //exception handling when request vendor does not present
         if (fileName == null) {
-            return ResponseEntity.badRequest().build();
+            throw new VendorNotSupportedException("No test data configuration found for vendor: " + processor);
         }
 
         try (InputStream internalStream = new ClassPathResource("test-data/internal_transactions.json").getInputStream();
